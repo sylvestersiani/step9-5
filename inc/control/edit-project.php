@@ -12,25 +12,38 @@
 		
 		// if sucessefull
 		if($update_data && mysqli_affected_rows($db_con) > 0){
-		
-			if ($status_update == 'complete') {
 
-				$get_number = "SELECT client_number FROM track WHERE ID = $id ";
-				$query = mysqli_query($db_con, $get_number);
-				
-				while ($row = mysqli_fetch_array($query)) {
-					$client_number = $row['client_number'];
-					// sending text message
-					$text_message = "Good news!
-					Your order is now complete and ready for pick up." ;
-					 send_text(.0.$client_number , $text_message);
-					break; 
-				}		
-			}	
-			 header('location: ../../dashboard.php');
-		}else {
+			$get_number = "SELECT client_number FROM track WHERE ID = $id ";
+			$query = mysqli_query($db_con, $get_number);
+
+			switch ($status_update) {
+				case 'quality_check':
+					while ($row = mysqli_fetch_array($query)) {
+						$client_number = $row['client_number'];
+						// sending text message
+						$text_message = "Order update!
+						Your order is almost complete and is now being quality checked. We will update you once completed." ;
+					 	send_text(.0.$client_number , $text_message);
+					 	header('location: ../../edit.php?id='.$id.'');
+					}	
+				break;
+				case 'complete':
+					while ($row = mysqli_fetch_array($query)) {
+						$client_number = $row['client_number'];
+						// sending text message
+						$text_message = "Good news!
+						Your order is now complete and ready for shipping. If you opted for collection a member of our team will get in touch with you shortly. :)" ;
+					 	send_text(.0.$client_number , $text_message);
+					 	header('location: ../../dashboard.php');
+					}	
+				break;
+					
+				default: 
+					header('location: ../../edit.php?id='.$id.'');	
+				break;
+			}
 			
-			header('location: ../../edit.php?id='.$id.'');	
+
 		}
 		mysqli_close($db_con);
 	}
