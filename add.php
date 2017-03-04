@@ -169,4 +169,4 @@
 		</div><!--/end of container div-->
 	</div>
 	
-<?php include('inc/footer.php');?>
+<?php include('inc/template/footer.php');?>

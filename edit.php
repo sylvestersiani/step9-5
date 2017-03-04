@@ -86,4 +86,4 @@
 
 
 
-<?php include('inc/footer.php');?>
+<?php include('inc/template/footer.php');?>
